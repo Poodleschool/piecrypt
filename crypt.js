@@ -12,13 +12,27 @@ function decryptText(encryptedText, key) {
     return decoder.decode(new Uint8Array(decryptedData));
 }
 
+function hashKey(key, length) {
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+        hash = (hash * 31 + key.charCodeAt(i)) % 256;
+    }
+    const result = new Uint8Array(length);
+    for (let j = 0; j < length; j++) {
+        result[j] = (hash + j * 17) % 256;
+    }
+    return result;
+}
+
 function encryptImage(imageData, key) {
-    const encryptedData = imageData.map((byte, index) => byte ^ key.charCodeAt(index % key.length));
+    const hashedKey = hashKey(key, imageData.length);
+    const encryptedData = imageData.map((byte, index) => byte ^ hashedKey[index]);
     return encryptedData;
 }
 
 function decryptImage(encryptedData, key) {
-    const decryptedData = encryptedData.map((byte, index) => byte ^ key.charCodeAt(index % key.length));
+    const hashedKey = hashKey(key, encryptedData.length);
+    const decryptedData = encryptedData.map((byte, index) => byte ^ hashedKey[index]);
     return decryptedData;
 }
 
@@ -130,16 +144,6 @@ document.write(`
                 img.src = event.target.result;
             }
             reader.readAsDataURL(file);
-        }
-
-        function handleImageDecrypt() {
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-            const key = document.getElementById('keyInput').value;
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const decryptedData = decryptImage(imageData.data, key);
-            imageData.data.set(decryptedData);
-            ctx.putImageData(imageData, 0, 0);
         }
     </script>
 </body>
