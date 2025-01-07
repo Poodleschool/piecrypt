@@ -22,7 +22,7 @@ function decryptImage(encryptedData, key) {
     return decryptedData;
 }
 
-// Basic HTML structure to interact with the encryption functions
+// Enhanced HTML structure to interact with the encryption functions
 document.write(`
 <!DOCTYPE html>
 <html lang="en">
@@ -32,37 +32,67 @@ document.write(`
     <title>Encryption Tool</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             flex-direction: column;
-            background-color: #f4f4f4;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+        }
+        .container {
+            background: #34495e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            margin-bottom: 20px;
         }
         textarea, input, button {
             margin: 10px 0;
             padding: 10px;
-            width: 300px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+        }
+        textarea, input {
+            background: #ecf0f1;
+            color: #333;
+        }
+        button {
+            background: #2980b9;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #3498db;
         }
         canvas {
-            border: 1px solid #ddd;
             margin-top: 20px;
+            border: 1px solid #ecf0f1;
+        }
+        .result {
+            margin-top: 20px;
+            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
-    <h1>Simple Encryption Tool</h1>
-    <textarea id="textInput" placeholder="Enter text to encrypt"></textarea>
-    <input type="text" id="keyInput" placeholder="Enter encryption key">
-    <button onclick="handleEncrypt()">Encrypt Text</button>
-    <button onclick="handleDecrypt()">Decrypt Text</button>
-    <p>Result: <span id="result"></span></p>
-    
-    <input type="file" id="imageInput" accept="image/*">
-    <button onclick="handleImageEncrypt()">Encrypt Image</button>
-    <button onclick="handleImageDecrypt()">Decrypt Image</button>
-    <canvas id="canvas"></canvas>
+    <div class="container">
+        <h1>Simple Encryption Tool</h1>
+        <textarea id="textInput" placeholder="Enter text to encrypt"></textarea>
+        <input type="text" id="keyInput" placeholder="Enter encryption key">
+        <button onclick="handleEncrypt()">Encrypt Text</button>
+        <button onclick="handleDecrypt()">Decrypt Text</button>
+        <p class="result">Result: <span id="result"></span></p>
+        
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="handleImageEncrypt()">Encrypt Image</button>
+        <button onclick="handleImageDecrypt()">Decrypt Image</button>
+        <canvas id="canvas"></canvas>
+    </div>
 
     <script>
         function handleEncrypt() {
