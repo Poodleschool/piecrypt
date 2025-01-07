@@ -24,16 +24,24 @@ function hashKey(key, length) {
     return result;
 }
 
-function encryptImage(imageData, key) {
+function scrambleImage(imageData, key) {
     const hashedKey = hashKey(key, imageData.length);
-    const encryptedData = imageData.map((byte, index) => byte ^ hashedKey[index]);
-    return encryptedData;
+    const blockSize = 8; // Process image in blocks to enhance scrambling
+    for (let i = 0; i < imageData.length; i += blockSize) {
+        for (let j = 0; j < blockSize && i + j < imageData.length; j++) {
+            imageData[i + j] ^= hashedKey[(i + j) % hashedKey.length];
+        }
+        imageData.reverse();  // Introduce additional scrambling step
+    }
+    return imageData;
+}
+
+function encryptImage(imageData, key) {
+    return scrambleImage(imageData, key);
 }
 
 function decryptImage(encryptedData, key) {
-    const hashedKey = hashKey(key, encryptedData.length);
-    const decryptedData = encryptedData.map((byte, index) => byte ^ hashedKey[index]);
-    return decryptedData;
+    return scrambleImage(encryptedData, key);  // Symmetric scrambling for encryption and decryption
 }
 
 // Enhanced HTML structure to interact with the encryption functions
